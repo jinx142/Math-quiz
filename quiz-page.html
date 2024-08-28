@@ -22,10 +22,35 @@
 
             .calculator-container {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
                 height: 100%;
             }
+
+            .quiz-screen {
+                background-color: rgb(221, 180, 240);
+                border: 2px solid black;
+                border-radius: 3px;
+
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                margin-top: 30px;
+                margin-bottom: 20px;
+
+                width: 200px;
+                height: 50px;
+
+                box-shadow: -5px 5px rgb(207, 210, 255);
+            }
+
+            .quiz-questions {
+                font-size: 30px;
+                font-family: Arial;
+            }
+
 
             .calculator {
                 background-color: rgb(255, 193, 193);
@@ -55,10 +80,10 @@
                 width: 200px;
                 height: 50px;
 
-                box-shadow: -5px -5px rgb(197, 133, 133);
+                box-shadow: -5px 5px rgb(197, 133, 133);
             }
 
-            .calculation {
+            .answer {
                 font-size: 30px;
                 font-family: Arial;
                 margin-left: 20px;
@@ -75,7 +100,7 @@
 
                 margin: 8px 19px;
 
-                box-shadow: -5px -5px rgb(197, 133, 133);
+                box-shadow: -5px 5px rgb(197, 133, 133);
                 cursor: pointer;
             }
 
@@ -90,7 +115,7 @@
 
                 margin: 8px 19px;
 
-                box-shadow: 5px 5px rgb(197, 133, 133);
+                box-shadow: -5px 5px rgb(197, 133, 133);
                 cursor: pointer;
             }
 
@@ -105,7 +130,7 @@
 
                 margin: 8px 19px;
 
-                box-shadow: 5px 5px rgb(197, 133, 133);
+                box-shadow: -5px 5px rgb(197, 133, 133);
                 cursor: pointer;
             }
 
@@ -120,7 +145,7 @@
 
                 margin: 8px 19px;
 
-                box-shadow: 5px 5px rgb(197, 133, 133);
+                box-shadow: -5px 5px rgb(197, 133, 133);
                 cursor: pointer;
             }
         </style>
@@ -128,10 +153,15 @@
     <body>
         <img class="background" src="img/background.jpg" alt="Background Image">
 
+        
+
         <div class="calculator-container">
+            <div class="quiz-screen">
+                <p class="quiz-questions">1 + 2</p>
+            </div>
             <div class="calculator">
                 <div class="screen">
-                    <p class="calculation">1 + 2</p>
+                    <p class="answer"></p>
                 </div>
                 <div class="buttons">
                     <div class="1st-row">
