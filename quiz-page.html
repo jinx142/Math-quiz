@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Math quiz</title>
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .background {
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                z-index: -1;
+                background-size: cover;
+            }
+
+            .calculator-container {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100%;
+            }
+
+            .calculator {
+                background-color: rgb(255, 193, 193);
+                border: 1px solid black;
+                border-radius: 10px;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: flex-start;
+
+                height: 400px;
+                width: 250px;
+            }
+
+            .screen {
+                background-color: beige;
+                border: 2px solid black;
+                border-radius: 3px;
+
+                display: flex;
+                align-items: center;
+
+                margin-top: 30px;
+                margin-bottom: 20px;
+
+                width: 200px;
+                height: 50px;
+
+                box-shadow: -5px -5px rgb(197, 133, 133);
+            }
+
+            .calculation {
+                font-size: 30px;
+                font-family: Arial;
+                margin-left: 20px;
+            }
+
+            .gray-buttons {
+                font-size: 19px;
+                font-family: Arial;
+
+                padding: 15px;
+                background-color: rgb(208, 215, 223);
+                border: 1px solid black;
+                border-radius: 2px;
+
+                margin: 8px 19px;
+
+                box-shadow: -5px -5px rgb(197, 133, 133);
+                cursor: pointer;
+            }
+
+            .red-buttons {
+                font-size: 19px;
+                font-family: Arial;
+
+                padding: 15px;
+                background-color: rgb(245, 144, 129);
+                border: 1px solid black;
+                border-radius: 2px;
+
+                margin: 8px 19px;
+
+                box-shadow: 5px 5px rgb(197, 133, 133);
+                cursor: pointer;
+            }
+
+            .beige-buttons {
+                font-size: 19px;
+                font-family: Arial;
+
+                padding: 15px;
+                background-color: beige;
+                border: 1px solid black;
+                border-radius: 2px;
+
+                margin: 8px 19px;
+
+                box-shadow: 5px 5px rgb(197, 133, 133);
+                cursor: pointer;
+            }
+
+            .orange-buttons {
+                font-size: 19px;
+                font-family: Arial;
+                
+                padding: 15px;
+                background-color: rgb(243, 200, 136);
+                border: 1px solid black;
+                border-radius: 2px;
+
+                margin: 8px 19px;
+
+                box-shadow: 5px 5px rgb(197, 133, 133);
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <img class="background" src="img/background.jpg" alt="Background Image">
+
+        <div class="calculator-container">
+            <div class="calculator">
+                <div class="screen">
+                    <p class="calculation">1 + 2</p>
+                </div>
+                <div class="buttons">
+                    <div class="1st-row">
+                        <button class="gray-buttons">1</button>
+                        <button class="gray-buttons">2</button>
+                        <button class="gray-buttons">3</button>
+                    </div>
+    
+                    <div class="2nd-row">
+                        <button class="red-buttons">4</button>
+                        <button class="red-buttons">5</button>
+                        <button class="red-buttons">6</button>
+                    </div>
+    
+                    <div class="3rd-row">
+                        <button class="beige-buttons">7</button>
+                        <button class="beige-buttons">8</button>
+                        <button class="beige-buttons">9</button>
+                    </div>
+    
+                    <div class="4th-row">
+                        <button class="orange-buttons">0</button>
+                        <button class="orange-buttons">=</button>
+                        <button class="orange-buttons">x</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
