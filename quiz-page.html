@@ -24,7 +24,6 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                justify-content: center;
                 height: 100%;
             }
 
@@ -153,57 +152,92 @@
                 box-shadow: -5px 5px rgb(197, 133, 133);
                 cursor: pointer;
             }
+
+            .main-container {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-evenly;
+            }
+
+            .text {
+                font-family: Arial;
+                font-size: 80px;
+            }
+
+            .green-glow {
+                text-shadow: 0 0 10px #0f0, 0 0 20px #0f0, 0 0 30px #0f0, 0 0 40px #0f0, 0 0 50px #0f0, 0 0 60px #0f0, 0 0 70px #0f0;
+            }
+            
+            .red-glow {
+                text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00, 0 0 60px #f00, 0 0 70px #f00;
+            }
         </style>
     </head>
     <body>
         <img class="background" src="img/background.jpg" alt="Background Image">
 
-        
+        <div class="main-container">
+            <div class="text" id="goodResult">Good</div>
 
-        <div class="calculator-container">
-            <div class="quiz-screen">
-                <p id="question" class="quiz-questions"></p>
-            </div>
-            <div class="calculator">
-                <div id="screen" class="screen">
-                    <p class="answer">Result :</p>
-                    <p id="js-answer" class="answer"></p>
+            <div class="calculator-container">
+                <div class="quiz-screen">
+                    <p id="question" class="quiz-questions"></p>
                 </div>
-                <div id="buttons-container" class="calculatoer-button">
-                    <!-- 
-                    <div class="1st-row">
-                        <button class="gray-buttons">1</button>
-                        <button class="gray-buttons">2</button>
-                        <button class="gray-buttons">3</button>
+                <div class="calculator">
+                    <div id="screen" class="screen">
+                        <p class="answer">Result :</p>
+                        <p id="js-answer" class="answer"></p>
                     </div>
-    
-                    <div class="2nd-row">
-                        <button class="red-buttons">4</button>
-                        <button class="red-buttons">5</button>
-                        <button class="red-buttons">6</button>
+                    <div id="buttons-container" class="calculatoer-button">
+                        <!-- 
+                        <div class="1st-row">
+                            <button class="gray-buttons">1</button>
+                            <button class="gray-buttons">2</button>
+                            <button class="gray-buttons">3</button>
+                        </div>
+        
+                        <div class="2nd-row">
+                            <button class="red-buttons">4</button>
+                            <button class="red-buttons">5</button>
+                            <button class="red-buttons">6</button>
+                        </div>
+        
+                        <div class="3rd-row">
+                            <button class="beige-buttons">7</button>
+                            <button class="beige-buttons">8</button>
+                            <button class="beige-buttons">9</button>
+                        </div>
+        
+                        <div class="4th-row">
+                            <button class="orange-buttons">0</button>
+                            <button class="orange-buttons">=</button>
+                            <button class="orange-buttons">x</button>
+                        </div>
+                        -->
                     </div>
-    
-                    <div class="3rd-row">
-                        <button class="beige-buttons">7</button>
-                        <button class="beige-buttons">8</button>
-                        <button class="beige-buttons">9</button>
-                    </div>
-    
-                    <div class="4th-row">
-                        <button class="orange-buttons">0</button>
-                        <button class="orange-buttons">=</button>
-                        <button class="orange-buttons">x</button>
-                    </div>
-                    -->
                 </div>
             </div>
+            <div class="text" id="badResult">Bad</div>
         </div>
+
+
 
         <script>
             const questions = ["18 × 5", "72 ÷ 8", "3 × 4", "15 ÷ 3", "25 + 17", "18 - 9", "6 × 2", "20 ÷ 4", "14 + 8", "30 - 12"];
+            const answers = [90, 9, 12, 5, 42, 9, 12, 5, 22, 18];
+            
             const question = document.getElementById('question');
 
             const screen = document.getElementById('js-answer');
+
+            const goodResult = document.getElementById('goodResult')
+
+            const badResult = document.getElementById('badResult')
+
+
+            let currentIndex = 0;
+            let score = 0;
             
             function generateButtons() {
                 html = ``;
@@ -330,8 +364,9 @@
                         btn.onclick = (() => updateAnswer(0));
                     } else if (i === 11) {
                         text = document.createTextNode('=');
+                        btn.onclick = (() => checkingAnswer(answer));
                     } else if (i === 12) {
-                        text = document.createTextNode('x');
+                        text = document.createTextNode('×');
                         btn.onclick = deleteValue;
                     } else {
                         text = document.createTextNode(i);
@@ -349,6 +384,11 @@
             let answer = '';
             
             function updateAnswer(value) {
+                if (value === '') {
+                    answer = value;
+                    displayAnswer(answer);
+                    return;
+                }
                 answer += value;
                 displayAnswer(answer);
             }
@@ -362,13 +402,30 @@
             }
 
             function displayAnswer(answer) {
-                document.getElementById('js-answer').innerHTML = answer;
+                screen.innerHTML = answer;
             }
             
+            function displayQuestion() {
+                question.innerHTML = questions[currentIndex];
+            }
 
-            questions.forEach((element) => {
-                question.innerHTML = element;
-            });
+            function checkingAnswer(answer) {
+                if(answer == answers[currentIndex]) {
+                    goodResult.classList.add('green-glow');
+                    badResult.classList.remove('red-glow')
+                } else {
+                    badResult.classList.add('red-glow')
+                    goodResult.classList.remove('green-glow');
+                }
+                currentIndex++;
+                updateAnswer('');
+                displayQuestion();
+
+            }
+
+            displayQuestion();
+
+            
 
             //generateButtons();
             /*generateButtonsStage1(1,'gray-buttons');
