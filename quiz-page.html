@@ -84,9 +84,14 @@
             }
 
             .answer {
-                font-size: 30px;
+                font-size: 20px;
+                font-weight: bold;
                 font-family: Arial;
                 margin-left: 20px;
+            }
+
+            .calculatoer-button {
+                margin-left: 5px;
             }
 
             .gray-buttons {
@@ -157,13 +162,15 @@
 
         <div class="calculator-container">
             <div class="quiz-screen">
-                <p class="quiz-questions">1 + 2</p>
+                <p id="question" class="quiz-questions"></p>
             </div>
             <div class="calculator">
-                <div class="screen">
-                    <p class="answer"></p>
+                <div id="screen" class="screen">
+                    <p class="answer">Result :</p>
+                    <p id="js-answer" class="answer"></p>
                 </div>
-                <div class="buttons">
+                <div id="buttons-container" class="calculatoer-button">
+                    <!-- 
                     <div class="1st-row">
                         <button class="gray-buttons">1</button>
                         <button class="gray-buttons">2</button>
@@ -187,9 +194,190 @@
                         <button class="orange-buttons">=</button>
                         <button class="orange-buttons">x</button>
                     </div>
+                    -->
                 </div>
             </div>
         </div>
+
+        <script>
+            const questions = ["18 × 5", "72 ÷ 8", "3 × 4", "15 ÷ 3", "25 + 17", "18 - 9", "6 × 2", "20 ÷ 4", "14 + 8", "30 - 12"];
+            const question = document.getElementById('question');
+
+            const screen = document.getElementById('js-answer');
+            
+            function generateButtons() {
+                html = ``;
+                let buttonsContainerDiv = document.getElementById('buttons-container')
+
+                let firstDiv = document.createElement('div'); // <div></div>
+
+                let Btn1 = document.createElement('button'); // <button></button>
+                let Btn2 = document.createElement('button'); // <button></button>
+                let Btn3 = document.createElement('button'); // <button></button>
+
+                Btn1.classList.add('gray-buttons')
+                Btn2.classList.add('gray-buttons')
+                Btn3.classList.add('gray-buttons')
+
+                Btn1.onclick = function() {
+                    updateAnswer('1')
+                };
+                Btn2.addEventListener('click', () => updateAnswer('2'));
+                Btn3.onclick = () => updateAnswer('3');
+
+                //let text = document.createTextNode(`${letter[randomName]}`);
+                let text1 = document.createTextNode(1); // '1'
+                let text2 = document.createTextNode(2); // '2'
+                let text3 = document.createTextNode(3); // '3'
+
+                Btn1.appendChild(text1); // <button>1</button>
+                Btn2.appendChild(text2); // <button>2</button>
+                Btn3.appendChild(text3); // <button>3</button>
+
+                firstDiv.appendChild(Btn1); // <div> <button>1</button>
+                firstDiv.appendChild(Btn2); // <button>2</button>
+                firstDiv.appendChild(Btn3); // <button>3</button> </div>
+
+                buttonsContainerDiv.appendChild(firstDiv);
+                /*
+                <div id="buttons-container" class="buttons">
+                    <div>
+                        <button>1</button>
+                        <button>2</button>
+                        <button>3</button>
+                    </div>  
+                </div>
+                
+                */
+                console.log(firstDiv);
+            }
+
+            function generateButtonsStage1(buttonNumber, buttonClass) {
+                let buttonsContainerDiv = document.getElementById('buttons-container')
+
+                let firstDiv = document.createElement('div'); // <div></div>
+
+                let Btn1 = document.createElement('button'); // <button></button>
+                let Btn2 = document.createElement('button'); // <button></button>
+                let Btn3 = document.createElement('button'); // <button></button>
+
+                Btn1.classList.add(buttonClass);
+                Btn2.classList.add(buttonClass);
+                Btn3.classList.add(buttonClass);
+
+                Btn1.onclick = () => updateAnswer(buttonNumber);
+                Btn2.onclick = () => updateAnswer(buttonNumber + 1);
+                Btn3.onclick = () => updateAnswer(buttonNumber + 2);
+
+                //let text = document.createTextNode(`${letter[randomName]}`);
+                let text1 = document.createTextNode(buttonNumber); // '1'
+                let text2;
+                let text3;
+                debugger;
+                if (buttonNumber == 0) {
+                    text2 = document.createTextNode('='); // '='
+                    text3 = document.createTextNode('x'); // 'x'
+                }
+                else {
+                    text2 = document.createTextNode(buttonNumber + 1); // '2'
+                    text3 = document.createTextNode(buttonNumber + 2); // '3'
+                }
+
+
+                Btn1.appendChild(text1); // <button>1</button>
+                Btn2.appendChild(text2); // <button>2</button>
+                Btn3.appendChild(text3); // <button>3</button>
+
+                firstDiv.appendChild(Btn1); // <div> <button>1</button>
+                firstDiv.appendChild(Btn2); // <button>2</button>
+                firstDiv.appendChild(Btn3); // <button>3</button> </div>
+
+                buttonsContainerDiv.appendChild(firstDiv);
+                /*
+                <div id="buttons-container" class="buttons">
+                    <div>
+                        <button>1</button>
+                        <button>2</button>
+                        <button>3</button>
+                    </div>  
+                </div>
+                
+                */
+                console.log(firstDiv);
+            }
+
+            function generateButtonsStage2() {
+                let buttonsContainerDiv = document.getElementById('buttons-container');
+            
+                let div = document.createElement('div');
+                
+                for (let i = 1; i <= 12; i++) {
+                    let btn = document.createElement('button');
+                    if (i > 0 && i <= 3) {
+                        btn.classList.add('gray-buttons');
+                    } else if (i > 3 && i <= 6) {
+                        btn.classList.add('red-buttons');
+                    } else if (i > 6 && i <= 9) {
+                        btn.classList.add('beige-buttons');
+                    } else if (i > 9 && i <= 12) {
+                        btn.classList.add('orange-buttons');
+                    }
+                    
+                    
+                    let text;
+                    if (i === 10) {
+                        text = document.createTextNode(0);
+                        btn.onclick = (() => updateAnswer(0));
+                    } else if (i === 11) {
+                        text = document.createTextNode('=');
+                    } else if (i === 12) {
+                        text = document.createTextNode('x');
+                        btn.onclick = deleteValue;
+                    } else {
+                        text = document.createTextNode(i);
+                        btn.onclick = (() => updateAnswer(i));
+                    }
+        
+                    btn.appendChild(text);
+                    
+                    div.appendChild(btn);
+                }
+                
+                buttonsContainerDiv.appendChild(div);
+            }
+
+            let answer = '';
+            
+            function updateAnswer(value) {
+                answer += value;
+                displayAnswer(answer);
+            }
+
+            function deleteValue() {
+                answer = answer.slice(0, -1);
+
+                console.log(answer);
+
+                displayAnswer(answer);
+            }
+
+            function displayAnswer(answer) {
+                document.getElementById('js-answer').innerHTML = answer;
+            }
+            
+
+            questions.forEach((element) => {
+                question.innerHTML = element;
+            });
+
+            //generateButtons();
+            /*generateButtonsStage1(1,'gray-buttons');
+            generateButtonsStage1(4,'red-buttons');
+            generateButtonsStage1(7,'beige-buttons');
+            generateButtonsStage1(0,'orange-buttons');*/
+
+            generateButtonsStage2();
+        </script>
         
     </body>
 </html>
