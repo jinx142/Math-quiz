@@ -70,6 +70,10 @@
                 border: 2px solid black;
                 border-radius: 3px;
 
+                font-size: 20px;
+                font-weight: bold;
+                font-family: Arial;
+
                 display: flex;
                 align-items: center;
 
@@ -158,11 +162,17 @@
                 flex-direction: row;
                 align-items: center;
                 justify-content: space-evenly;
+
+                height: 100%;
             }
 
             .text {
                 font-family: Arial;
-                font-size: 80px;
+                font-size: 60px;
+
+                display: flex;
+                flex-direction: column;
+                align-items: center;
             }
 
             .green-glow {
@@ -172,15 +182,56 @@
             .red-glow {
                 text-shadow: 0 0 10px #f00, 0 0 20px #f00, 0 0 30px #f00, 0 0 40px #f00, 0 0 50px #f00, 0 0 60px #f00, 0 0 70px #f00;
             }
+
+            .modal {
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                height: 90%;
+                width: 80%;
+                border-radius: 8px;
+                background: rgba(0, 0, 0, 0.5);
+                z-index: 1;
+
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: adds a shadow for a nicer look */
+            }
+            
+
+            .overlay {
+                position: fixed;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.5);
+                backdrop-filter: blur(2px);
+                z-index: 1;
+            }
+
+            .hidden {
+                display: none;
+            }
+
+            .Answers {
+                font-family: Arial;
+                font-size: 40px;
+            }
+
         </style>
     </head>
     <body>
         <img class="background" src="img/background.jpg" alt="Background Image">
 
-        <div class="main-container">
-            <div class="text" id="goodResult">Good</div>
+        <div id="main" class="main-container">
+            <div class="text" id="rightAnswer">
+                Right
+                <p id="rightAnswerCount"></p>
+            </div>
 
-            <div class="calculator-container">
+            <div id="calculator" class="calculator-container">
                 <div class="quiz-screen">
                     <p id="question" class="quiz-questions"></p>
                 </div>
@@ -216,32 +267,83 @@
                         </div>
                         -->
                     </div>
+                    <div>
+                        <button onclick="showAnswers()">showAnswers</button>
+                    </div>
                 </div>
             </div>
-            <div class="text" id="badResult">Bad</div>
+            <div class="text" id="wrongAnswer">
+                Wrong
+                <p id="wrongAnswerCount"></p>
+            </div>
         </div>
-
-
 
         <script>
             const questions = ["18 × 5", "72 ÷ 8", "3 × 4", "15 ÷ 3", "25 + 17", "18 - 9", "6 × 2", "20 ÷ 4", "14 + 8", "30 - 12"];
             const answers = [90, 9, 12, 5, 42, 9, 12, 5, 22, 18];
             
+            const main = document.getElementById('main');
+
+            const calculator = document.getElementById('calculator');
+
+            const buttonsContainerDiv = document.getElementById('buttons-container');
+
             const question = document.getElementById('question');
 
-            const screen = document.getElementById('js-answer');
+            const screen = document.getElementById('screen');
 
-            const goodResult = document.getElementById('goodResult')
+            const answerScreen = document.getElementById('js-answer');
 
-            const badResult = document.getElementById('badResult')
+            const rightAnswer = document.getElementById('rightAnswer');
 
+            const wrongAnswer = document.getElementById('wrongAnswer');
+
+            let rightAnswersIndex =[];
+            let wrongAnswersIndex =[];
+
+            let righUserAnswers = [];
+            let wrongUserAnswers = [];
+
+            let wrongAnswerCount = 0;
+            let rightAnswerCount = 0;
 
             let currentIndex = 0;
-            let score = 0;
+
+            function showAnswers() {
+                debugger;
+                main.classList.add('modal');
+                //calculator.classList.add('hidden');
+            
+                rightAnswer.innerHTML = 'Right answers';
+                wrongAnswer.innerHTML = 'Wrong answers';
+            
+                rightAnswer.classList.add('green-glow');
+                wrongAnswer.classList.add('red-glow');
+            
+                let rightAnswerList = document.createElement('div');
+                let wrongAnswerList = document.createElement('div');
+            
+                for (let i = 0; i < rightAnswerCount; i++) {
+                    let p = document.createElement('p');
+                    let text = document.createTextNode(`${questions[rightAnswersIndex[i]]} = ${righUserAnswers[i]}`);
+                    p.appendChild(text);
+                    rightAnswerList.appendChild(p);
+                }
+            
+                for (let i = 0; i < wrongAnswerCount; i++) {
+                    let p = document.createElement('p');
+                    let text = document.createTextNode(`${questions[wrongAnswersIndex[i]]} = ${wrongUserAnswers[i]}`);
+                    p.appendChild(text);
+                    wrongAnswerList.appendChild(p);
+                }
+            
+                rightAnswer.appendChild(rightAnswerList);
+                wrongAnswer.appendChild(wrongAnswerList);
+            }
+            
             
             function generateButtons() {
                 html = ``;
-                let buttonsContainerDiv = document.getElementById('buttons-container')
 
                 let firstDiv = document.createElement('div'); // <div></div>
 
@@ -341,8 +443,6 @@
             }
 
             function generateButtonsStage2() {
-                let buttonsContainerDiv = document.getElementById('buttons-container');
-            
                 let div = document.createElement('div');
                 
                 for (let i = 1; i <= 12; i++) {
@@ -363,11 +463,11 @@
                         text = document.createTextNode(0);
                         btn.onclick = (() => updateAnswer(0));
                     } else if (i === 11) {
-                        text = document.createTextNode('=');
-                        btn.onclick = (() => checkingAnswer(answer));
-                    } else if (i === 12) {
                         text = document.createTextNode('×');
                         btn.onclick = deleteValue;
+                    } else if (i === 12) {
+                        text = document.createTextNode('=');
+                        btn.onclick = (() => checkingAnswer(answer));
                     } else {
                         text = document.createTextNode(i);
                         btn.onclick = (() => updateAnswer(i));
@@ -402,7 +502,7 @@
             }
 
             function displayAnswer(answer) {
-                screen.innerHTML = answer;
+                answerScreen.innerHTML = answer;
             }
             
             function displayQuestion() {
@@ -410,22 +510,38 @@
             }
 
             function checkingAnswer(answer) {
-                if(answer == answers[currentIndex]) {
-                    goodResult.classList.add('green-glow');
-                    badResult.classList.remove('red-glow')
-                } else {
-                    badResult.classList.add('red-glow')
-                    goodResult.classList.remove('green-glow');
+                if(currentIndex<10) {
+                    if(answer == answers[currentIndex]) {
+                        rightAnswer.classList.add('green-glow');
+                        wrongAnswer.classList.remove('red-glow')
+                        rightAnswersIndex += currentIndex;
+                        righUserAnswers += answer;
+                        rightAnswerCount++;
+                        document.getElementById('rightAnswerCount').innerHTML = rightAnswerCount;
+                    } else {
+                        wrongAnswer.classList.add('red-glow')
+                        rightAnswer.classList.remove('green-glow');
+                        wrongAnswersIndex += currentIndex;
+                        wrongUserAnswers += answer;
+                        wrongAnswerCount++;
+                        document.getElementById('wrongAnswerCount').innerHTML = wrongAnswerCount;
+                    }
                 }
                 currentIndex++;
+                if(currentIndex >= 10) {
+                    screen.style.justifyContent = "center";
+                    screen.innerHTML = 'Good Job';
+                    question.innerHTML = 'finished';
+                    showAnswers();
+                    return;
+                }
                 updateAnswer('');
                 displayQuestion();
-
             }
 
             displayQuestion();
 
-            
+            generateButtonsStage2();
 
             //generateButtons();
             /*generateButtonsStage1(1,'gray-buttons');
@@ -433,7 +549,7 @@
             generateButtonsStage1(7,'beige-buttons');
             generateButtonsStage1(0,'orange-buttons');*/
 
-            generateButtonsStage2();
+            
         </script>
         
     </body>
